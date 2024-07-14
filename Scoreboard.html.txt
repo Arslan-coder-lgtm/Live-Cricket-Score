@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Cricket Score</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            text-align: center;
+        }
+        #scoreboard {
+            font-size: 2em;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Live Cricket Score</h1>
+    <div id="scoreboard">Loading...</div>
+
+    <script>
+        const apiKey = 'e02252ea-669b-4bef-bf77-6ff08c407fd6';
+        const matchId = '42837ded-0ef1-48f8-b6ed-6120d52e15bf'; 
+        const apiUrl = `https://api.cricapi.com/v1/match_info?apikey=${apiKey}&id=${matchId}`;
+
+        async function fetchScore() {
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                const score = data.data.score; // Adjust this based on the API response structure
+                document.getElementById('scoreboard').innerText = score;
+            } catch (error) {
+                console.error('Error fetching score:', error);
+                document.getElementById('scoreboard').innerText = 'Error fetching score';
+            }
+        }
+
+        // Fetch score initially
+        fetchScore();
+
+        // Fetch score every 60 seconds
+        setInterval(fetchScore, 60000);
+    </script>
+</body>
+</html>
